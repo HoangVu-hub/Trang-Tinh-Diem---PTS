@@ -44,19 +44,16 @@
             text-align: left;
             font-size: 14pt;
         }
-        .recipient .flex {
-            display: flex;
-            justify-content: flex-start;
-        }
-        .recipient .inline-block {
-            text-align: left;
-        }
-        .recipient .inline-block p {
-            position: relative;
-            padding-left: 1rem;
+        .recipient .recipient-list {
             font-size: 14pt;
+            display: inline;
+            white-space: nowrap;
         }
-        .recipient .inline-block p::before {
+        .recipient .recipient-list span {
+            position: relative;
+            padding-left: 0.2rem;
+        }
+        .recipient .recipient-list span::before {
             content: '-';
             position: absolute;
             left: 0;
@@ -178,7 +175,7 @@
                 background-color: #ffffff !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-                transform: none !important;
+                transform: scale(1) !important;
                 zoom: 100% !important;
             }
             .form-container {
@@ -198,11 +195,10 @@
             }
             .recipient .kinh-gui {
                 text-align: left !important;
-                margin-left: 223.316pt !important;
             }
-            .recipient .flex {
-                justify-content: flex-start !important;
-                margin-left: 295.113pt !important;
+            .recipient .recipient-list {
+                display: inline !important;
+                white-space: nowrap !important;
             }
             .title-main {
                 font-size: 12pt !important;
@@ -288,14 +284,7 @@
         <h2 class="form-title mt-4 mb-2">ĐƠN XIN NHẬN TIỀN MIỄN GIẢM HỌC PHÍ</h2>
         <p class="form-title" id="subtitle">Dành cho tân sinh viên <span class="shape">hệ Đại học chính</span> quy năm 2025, khóa 26</p>
         <div class="recipient mt-4">
-            <p id="kinhGui" class="kinh-gui" style="margin-left: 223.316pt;"><strong>Kính gửi:</strong></p>
-            <div class="flex" style="margin-left: 295.113pt;">
-                <div class="inline-block space-y-1">
-                    <p>Ban Giám hiệu Trường Đại học Cửu Long;</p>
-                    <p>Trung tâm Tuyển sinh – Truyền thông;</p>
-                    <p>Phòng Kế hoạch – Tài chính.</p>
-                </div>
-            </div>
+            <p id="kinhGui" class="kinh-gui"><strong>Kính gửi:</strong> <span class="recipient-list"><span>Ban Giám hiệu Trường Đại học Cửu Long;</span> <span>Trung tâm Tuyển sinh – Truyền thông;</span> <span>Phòng Kế hoạch – Tài chính.</span></span></p>
         </div>
         <div class="personal-info mt-4 space-y-1">
             <div class="flex flex-col sm:flex-row justify-between gap-2">
@@ -368,7 +357,7 @@
         <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold">In Đơn</button>
         <button onclick="window.location.href='index.html'" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors font-semibold">Quay Lại Trang Tính Điểm</button>
         <div class="mt-4 text-center text-sm text-gray-600">
-            <p><strong>Hướng dẫn in:</strong> Chọn khổ giấy A4, tỷ lệ 100%, và đặt lề thành "Không" hoặc "0" trong cài đặt máy in để đảm bảo căn chỉnh chính xác.</p>
+            <p><strong>Hướng dẫn in:</strong> Chọn khổ giấy A4, tỷ lệ 100%, đặt lề thành "Không" hoặc "0", và bật tùy chọn in nền (background graphics) trong cài đặt máy in để đảm bảo căn chỉnh chính xác.</p>
         </div>
     </div>
     <p class="no-print mt-4 text-red-600 text-center font-semibold" id="errorMessage" style="display: none;">Lỗi: Không tìm thấy dữ liệu. Vui lòng quay lại trang tính điểm!</p>
@@ -432,6 +421,38 @@
             } else {
                 document.getElementById('selectedPolicy').innerText = data.discountMessage || 'Chưa chọn';
             }
+
+            // Align "Kính gửi" under "sinh viên"
+            function alignKinhGui() {
+                const subtitle = document.getElementById('subtitle');
+                const kinhGui = document.getElementById('kinhGui');
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                context.font = "14pt 'Times New Roman', Times, serif";
+                
+                const subtitleText = subtitle.innerText;
+                const sinhVienIndex = subtitleText.indexOf('sinh viên');
+                if (sinhVienIndex === -1) return;
+                
+                const textBeforeSinhVien = subtitleText.substring(0, sinhVienIndex);
+                const sinhVienText = 'sinh viên';
+                const textBeforeSinhVienWidth = context.measureText(textBeforeSinhVien).width;
+                const sinhVienWidth = context.measureText(sinhVienText).width;
+                
+                const formWidth = formContainer.offsetWidth;
+                const subtitleWidth = context.measureText(subtitleText).width;
+                const subtitleLeftOffset = (formWidth - subtitleWidth) / 2;
+                const sinhVienCenter = subtitleLeftOffset + textBeforeSinhVienWidth + (sinhVienWidth / 2);
+                
+                const kinhGuiText = 'Kính gửi:';
+                const kinhGuiWidth = context.measureText(kinhGuiText).width;
+                const kinhGuiLeftMargin = sinhVienCenter - (kinhGuiWidth / 2);
+                
+                kinhGui.style.marginLeft = `${kinhGuiLeftMargin}px`;
+            }
+
+            alignKinhGui();
+            window.addEventListener('resize', alignKinhGui);
         };
 
         function formatDate(dateString) {
@@ -445,7 +466,7 @@
         }
 
         function previewPrint() {
-            alert('Vui lòng kiểm tra xem trước in, chọn khổ giấy A4, tỷ lệ 100%, và đặt lề thành "Không" hoặc "0" để đảm bảo căn chỉnh chính xác.');
+            alert('Vui lòng kiểm tra xem trước in, chọn khổ giấy A4, tỷ lệ 100%, đặt lề thành "Không" hoặc "0", và bật tùy chọn in nền (background graphics) để đảm bảo căn chỉnh chính xác.');
             window.print();
         }
     </script>
