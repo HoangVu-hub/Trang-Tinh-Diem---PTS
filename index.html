@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
+<html lang="vi"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tính Điểm và Chính Sách Giảm Học Phí - Đại học Cửu Long</title>
+    <meta name="description" content="Tính điểm trung bình và kiểm tra chính sách giảm học phí cho tân sinh viên Đại học Cửu Long">
+    <meta name="keywords" content="giảm học phí, Đại học Cửu Long, tính điểm trung bình, xét tuyển đại học">
+    <meta name="author" content="Đại học Cửu Long">
+    <title>Tính Điểm &amp; Giảm Học Phí - Đại học Cửu Long</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -12,26 +13,19 @@
         .custom-select {
             position: relative;
         }
-        .custom-select select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            padding-right: 3rem;
-        }
         .custom-select::after {
             content: '▼';
             position: absolute;
-            right: 1rem;
+            right: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
             color: #3b82f6;
-            font-size: 1.25rem;
+            font-size: 0.875rem;
             font-weight: 700;
             pointer-events: none;
             transition: transform 0.3s ease, color 0.3s ease;
         }
-        .custom-select select:focus + ::after,
-        .custom-select select:hover + ::after {
+        .custom-select input:focus + ::after {
             transform: translateY(-50%) scale(1.2);
             color: #1e40af;
         }
@@ -41,237 +35,636 @@
         }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
         .highlight {
             background-color: #fef08a;
-            font-weight: 600;
+            font-weight: 500;
             padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
+            border-radius: 0.375rem;
+        }
+        .error-message {
+            display: none;
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        .policy-option {
+            background-color: #eff6ff;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease;
+        }
+        .policy-option:hover {
+            background-color: #dbeafe;
+        }
+        .policy-option input:checked + label {
+            color: #1e40af;
+            font-weight: 500;
+        }
+        .policy-option label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sub-policy {
+            margin-left: 1.5rem;
+            margin-top: 0.25rem;
+        }
+        input, select {
+            transition: all 0.2s ease;
+        }
+        .suggestion-list {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            max-height: 10rem;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .suggestion-item {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .suggestion-item:hover {
+            background-color: #f3f4f6;
+        }
+        .suggestion-item.active {
+            background-color: #dbeafe;
+            font-weight: 500;
+        }
+        @media (max-width: 640px) {
+            body {
+                font-size: 0.875rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.25rem;
+            }
+            input, select {
+                font-size: 0.875rem;
+                padding: 0.5rem 0.75rem;
+            }
+            .policy-option {
+                padding: 0.5rem;
+            }
+            .policy-option label {
+                font-size: 0.75rem;
+            }
+            table {
+                font-size: 0.75rem;
+            }
+            .suggestion-list {
+                max-height: 8rem;
+            }
         }
     </style>
-</head>
-<body class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen flex flex-col items-center p-4 sm:p-6 md:p-8">
-    <header class="text-center mb-6 sm:mb-8">
-        <a href="https://tuyensinh.mku.edu.vn/" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/d/de/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_C%E1%BB%ADu_Long.svg/1200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_C%E1%BB%ADu_Long.svg.png" alt="Logo Đại học Cửu Long" class="w-32 sm:w-40 md:w-48 mx-auto hover:scale-105 transition-transform duration-300">
-        </a>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-800 mt-4">Tính Điểm & Chính Sách Giảm Học Phí</h1>
-    </header>
-    <main class="w-full max-w-5xl flex flex-col md:flex-row gap-6 md:gap-8">
-        <section class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 w-full md:w-1/2">
-            <h2 class="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Nhập Thông Tin & Điểm</h2>
-            <form class="space-y-4">
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.relative{position:relative}.mx-auto{margin-left:auto;margin-right:auto}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.ml-2{margin-left:0.5rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.block{display:block}.flex{display:flex}.h-4{height:1rem}.min-h-screen{min-height:100vh}.w-24{width:6rem}.w-4{width:1rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.border-collapse{border-collapse:collapse}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.space-y-1\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.375rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-blue-200{--tw-border-opacity:1;border-color:rgb(191 219 254 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-gray-600{--tw-bg-opacity:1;background-color:rgb(75 85 99 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-blue-50{--tw-gradient-from:#eff6ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 246 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-gray-100{--tw-gradient-to:#f3f4f6 var(--tw-gradient-to-position)}.p-4{padding:1rem}.p-1\.5{padding:0.375rem}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.pl-5{padding-left:1.25rem}.text-center{text-align:center}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.italic{font-style:italic}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.hover\:scale-105:hover{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-700:hover{--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.focus\:border-blue-600:focus{--tw-border-opacity:1;border-color:rgb(37 99 235 / var(--tw-border-opacity, 1))}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-blue-600:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(37 99 235 / var(--tw-ring-opacity, 1))}@media (min-width: 640px){.sm\:w-32{width:8rem}.sm\:w-auto{width:auto}.sm\:flex-row{flex-direction:row}.sm\:gap-6{gap:1.5rem}.sm\:p-6{padding:1.5rem}.sm\:p-5{padding:1.25rem}.sm\:text-2xl{font-size:1.5rem;line-height:2rem}.sm\:text-base{font-size:1rem;line-height:1.5rem}.sm\:text-lg{font-size:1.125rem;line-height:1.75rem}.sm\:text-sm{font-size:0.875rem;line-height:1.25rem}.sm\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width: 768px){.md\:w-1\/2{width:50%}.md\:flex-row{flex-direction:row}}</style></head>
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen flex flex-col items-center p-4 sm:p-6">
+    <main class="w-full max-w-4xl flex flex-col md:flex-row gap-4 sm:gap-6">
+        <section class="bg-white rounded-xl shadow-md p-4 sm:p-5 w-full md:w-1/2">
+            <h1 class="text-xl sm:text-2xl font-bold text-blue-800 mb-4 text-center">Tính Điểm &amp; Giảm Học Phí</h1>
+            <h2 class="text-lg sm:text-xl font-semibold text-blue-700 mb-3">Nhập Thông Tin &amp; Điểm</h2>
+            <form class="space-y-3" id="inputForm">
                 <div>
-                    <label for="fullName" class="block text-sm sm:text-base font-medium text-gray-700">Họ và tên *</label>
-                    <input type="text" id="fullName" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg" placeholder="Nguyễn Văn A" required>
+                    <label for="fullName" class="block text-sm font-medium text-gray-700">Họ và tên *</label>
+                    <input type="text" id="fullName" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" placeholder="Họ tên" required="" oninput="capitalizeWords(this)" onkeypress="handleEnter(event, this)" aria-label="Họ và tên">
                 </div>
                 <div>
-                    <label for="dob" class="block text-sm sm:text-base font-medium text-gray-700">Ngày sinh *</label>
-                    <input type="date" id="dob" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg" required>
+                    <label for="dob" class="block text-sm font-medium text-gray-700">Ngày sinh *</label>
+                    <input type="date" id="dob" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" required="" onkeypress="handleEnter(event, this)" aria-label="Ngày sinh">
                 </div>
                 <div>
-                    <label for="birthPlace" class="block text-sm sm:text-base font-medium text-gray-700">Nơi sinh *</label>
-                    <input type="text" id="birthPlace" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg" placeholder="Vĩnh Long" required>
+                    <label for="birthPlace" class="block text-sm font-medium text-gray-700">Nơi sinh *</label>
+                    <input type="text" id="birthPlace" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" placeholder="Nơi sinh" required="" oninput="capitalizeWords(this)" onkeypress="handleEnter(event, this)" aria-label="Nơi sinh">
                 </div>
                 <div>
-                    <label for="address" class="block text-sm sm:text-base font-medium text-gray-700">Địa chỉ *</label>
-                    <input type="text" id="address" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg" placeholder="123 Đường ABC, Vĩnh Long" required>
+                    <label for="address" class="block text-sm font-medium text-gray-700">Địa chỉ *</label>
+                    <input type="text" id="address" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" placeholder="Địa chỉ" required="" oninput="capitalizeWords(this)" onkeypress="handleEnter(event, this)" aria-label="Địa chỉ">
                 </div>
                 <div>
-                    <label for="phone" class="block text-sm sm:text-base font-medium text-gray-700">Số điện thoại *</label>
-                    <input type="tel" id="phone" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg" placeholder="0123 456 789" pattern="[0-9]{10,11}" required>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Số điện thoại *</label>
+                    <input type="tel" id="phone" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" placeholder="Số điện thoại (10 số)" pattern="[0-9]{10}" required="" oninput="validatePhone(this)" onkeypress="handleEnter(event, this)" aria-label="Số điện thoại">
+                    <div id="error-phone" class="error-message">Số điện thoại phải là 10 chữ số, không chứa chữ cái.</div>
                 </div>
                 <div class="custom-select">
-                    <label for="major" class="block text-sm sm:text-base font-medium text-gray-700">Ngành học *</label>
-                    <select id="major" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg font-medium hover:border-blue-600 transition-colors" required>
-                        <option value="" disabled selected>Chọn ngành học</option>
-                        <option value="Y khoa">1. Y khoa</option>
-                        <option value="Răng – Hàm – Mặt">2. Răng – Hàm – Mặt</option>
-                        <option value="Y học cổ truyền">3. Y học cổ truyền</option>
-                        <option value="Dược học">4. Dược học</option>
-                        <option value="Kỹ thuật hình ảnh y học">5. Kỹ thuật hình ảnh y học</option>
-                        <option value="Hộ sinh">6. Hộ sinh</option>
-                        <option value="Kỹ thuật xét nghiệm y học">7. Kỹ thuật xét nghiệm y học</option>
-                        <option value="Kỹ thuật phục hồi chức năng">8. Kỹ thuật phục hồi chức năng</option>
-                        <option value="Điều dưỡng">9. Điều dưỡng</option>
-                        <option value="Marketing">10. Marketing</option>
-                        <option value="Quản trị kinh doanh">11. Quản trị kinh doanh</option>
-                        <option value="Quản lý kinh tế">12. Quản lý kinh tế</option>
-                        <option value="Kinh doanh thương mại">13. Kinh doanh thương mại</option>
-                        <option value="Tài chính – Ngân hàng">14. Tài chính – Ngân hàng</option>
-                        <option value="Công nghệ tài chính">15. Công nghệ tài chính</option>
-                        <option value="Kế toán">16. Kế toán</option>
-                        <option value="Thiết kế đồ họa">17. Thiết kế đồ họa</option>
-                        <option value="Luật">18. Luật</option>
-                        <option value="Luật kinh tế">19. Luật kinh tế</option>
-                        <option value="Quản trị dịch vụ du lịch và lữ hành">20. Quản trị dịch vụ du lịch và lữ hành</option>
-                        <option value="Công nghệ thông tin">21. Công nghệ thông tin</option>
-                        <option value="Công nghệ kỹ thuật công trình xây dựng">22. Công nghệ kỹ thuật công trình xây dựng</option>
-                        <option value="Công nghệ kỹ thuật điện, điện tử">23. Công nghệ kỹ thuật điện, điện tử</option>
-                        <option value="Kỹ thuật y sinh">24. Kỹ thuật y sinh</option>
-                        <option value="Kỹ thuật xây dựng công trình giao thông">25. Kỹ thuật xây dựng công trình giao thông</option>
-                        <option value="Công nghệ kỹ thuật ô tô">26. Công nghệ kỹ thuật ô tô</option>
-                        <option value="Công nghệ kỹ thuật cơ khí">27. Công nghệ kỹ thuật cơ khí</option>
-                        <option value="Công nghệ thực phẩm">28. Công nghệ thực phẩm</option>
-                        <option value="Nông học">29. Nông học</option>
-                        <option value="Bảo vệ thực vật">30. Bảo vệ thực vật</option>
-                        <option value="Nuôi trồng thủy sản">31. Nuôi trồng thủy sản</option>
-                        <option value="Thú y">32. Thú y</option>
-                        <option value="Tiếng Việt & Văn hóa Việt Nam">33. Tiếng Việt & Văn hóa Việt Nam</option>
-                        <option value="Ngôn ngữ Anh">34. Ngôn ngữ Anh</option>
-                        <option value="Đông phương học">35. Đông phương học</option>
-                        <option value="Công tác xã hội">36. Công tác xã hội</option>
-                        <option value="Truyền thông đa phương tiện">37. Truyền thông đa phương tiện</option>
-                        <option value="Quan hệ công chúng">38. Quan hệ công chúng</option>
-                    </select>
+                    <label for="major" class="block text-sm font-medium text-gray-700">Ngành học *</label>
+                    <input type="text" id="major" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" placeholder="Nhập ngành (VD: Công nghệ)" required="" oninput="filterMajors(this); capitalizeWords(this)" onkeypress="handleEnter(event, this)" onfocus="showSuggestions()" onblur="hideSuggestions()" aria-label="Ngành học">
+                    <div id="majorSuggestions" class="suggestion-list"></div>
                 </div>
-                <div class="custom-select">
-                    <label for="eduType" class="block text-sm sm:text-base font-medium text-gray-700">Loại hình giáo dục *</label>
-                    <select id="eduType" class="mt-1 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg font-medium hover:border-blue-600 transition-colors" onchange="updateSubjectTable()">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Chính sách giảm học phí: (chọn chính sách miễn giảm theo mục của văn bản chính sách)</label>
+                    <div class="space-y-2 mt-2">
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy1" name="discountPolicy" value="1" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Hộ nghèo, cận nghèo">
+                            <label for="policy1" class="ml-2 text-sm text-gray-700">1. Hộ nghèo, cận nghèo (50% năm thứ nhất)</label>
+                            <div id="policy1Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy1_poor" name="policy1Type" value="poor" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy1_poor" class="ml-2 text-sm text-gray-700">Hộ nghèo</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy1_nearPoor" name="policy1Type" value="nearPoor" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy1_nearPoor" class="ml-2 text-sm text-gray-700">Cận nghèo</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy2" name="discountPolicy" value="2" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Mồ côi cha hoặc mẹ">
+                            <label for="policy2" class="ml-2 text-sm text-gray-700">2. Mồ côi cha hoặc mẹ (50% năm thứ nhất)</label>
+                            <div id="policy2Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy2_father" name="policy2Type" value="father" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy2_father" class="ml-2 text-sm text-gray-700">Mồ côi cha</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy2_mother" name="policy2Type" value="mother" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy2_mother" class="ml-2 text-sm text-gray-700">Mồ côi mẹ</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy2_both" name="policy2Type" value="both" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy2_both" class="ml-2 text-sm text-gray-700">Mồ côi cha và mẹ</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy3" name="discountPolicy" value="3" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Con người có công, dân tộc thiểu số">
+                            <label for="policy3" class="ml-2 text-sm text-gray-700">3. Con người có công, dân tộc thiểu số,... (40% HK1)</label>
+                            <div id="policy3Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy3_revolutionary" name="policy3Type" value="revolutionary" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy3_revolutionary" class="ml-2 text-sm text-gray-700">Con của người có công với cách mạng</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy3_sibling" name="policy3Type" value="sibling" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy3_sibling" class="ml-2 text-sm text-gray-700">Có anh/chị đang là sinh viên ĐHCL</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy3_minority" name="policy3Type" value="minority" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy3_minority" class="ml-2 text-sm text-gray-700">Người dân tộc thiểu số</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy3_teacherChild" name="policy3Type" value="teacherChild" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy3_teacherChild" class="ml-2 text-sm text-gray-700">Con ruột của CB, GV trường THPT,...</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy3_mkuRelative" name="policy3Type" value="mkuRelative" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy3_mkuRelative" class="ml-2 text-sm text-gray-700">Con, em, cháu ruột của CB, GV ĐHCL</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy4" name="discountPolicy" value="4" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Học sinh Vĩnh Long hoặc Phú Quới">
+                            <label for="policy4" class="ml-2 text-sm text-gray-700">4. Học sinh Vĩnh Long hoặc Phú Quới</label>
+                            <div id="policy4Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy4_20" name="policy4Type" value="20%" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy4_20" class="ml-2 text-sm text-gray-700">Học sinh THPT, TTGDTX ở Vĩnh Long (20% HK1)</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy4_40" name="policy4Type" value="40%" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy4_40" class="ml-2 text-sm text-gray-700">Học sinh THCS và THPT Phú Quới (40% HK1)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy5" name="discountPolicy" value="5" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Ngành ưu tiên giảm học phí trọn khóa">
+                            <label for="policy5" class="ml-2 text-sm text-gray-700">5. các Ngành ưu tiên giảm học phí: Hộ sinh,..</label>
+                            <div id="policy5Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy5_socialWork" name="policy5Type" value="Công tác xã hội" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy5_socialWork" class="ml-2 text-sm text-gray-700">Công tác xã hội</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy5_transport" name="policy5Type" value="Kỹ thuật xây dựng công trình giao thông" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy5_transport" class="ml-2 text-sm text-gray-700">Kỹ thuật xây dựng công trình giao thông</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy5_biomedical" name="policy5Type" value="Kỹ thuật y sinh" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy5_biomedical" class="ml-2 text-sm text-gray-700">Kỹ thuật y sinh</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy5_commerce" name="policy5Type" value="Kinh doanh thương mại" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy5_commerce" class="ml-2 text-sm text-gray-700">Kinh doanh thương mại</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy5_midwifery" name="policy5Type" value="Hộ sinh" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy5_midwifery" class="ml-2 text-sm text-gray-700">Hộ sinh</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy5_imaging" name="policy5Type" value="Kỹ thuật hình ảnh y học" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy5_imaging" class="ml-2 text-sm text-gray-700">Kỹ thuật hình ảnh y học</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy9" name="discountPolicy" value="9" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Dân tộc Khmer">
+                            <label for="policy9" class="ml-2 text-sm text-gray-700">9. Dân tộc Khmer giới thiệu của Ban Dân tộc các tỉnh</label>
+                            <div id="policy9Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy9_anGiang" name="policy9Type" value="An Giang" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy9_anGiang" class="ml-2 text-sm text-gray-700">An Giang</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy9_bacLieu" name="policy9Type" value="Bạc Liêu" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy9_bacLieu" class="ml-2 text-sm text-gray-700">Bạc Liêu</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy9_hauGiang" name="policy9Type" value="Hậu Giang" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy9_hauGiang" class="ml-2 text-sm text-gray-700">Hậu Giang</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy9_kienGiang" name="policy9Type" value="Kiên Giang" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy9_kienGiang" class="ml-2 text-sm text-gray-700">Kiên Giang</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy9_socTrang" name="policy9Type" value="Sóc Trăng" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy9_socTrang" class="ml-2 text-sm text-gray-700">Sóc Trăng</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy9_traVinh" name="policy9Type" value="Trà Vinh" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy9_traVinh" class="ml-2 text-sm text-gray-700">Trà Vinh</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy9_vinhLong" name="policy9Type" value="Vĩnh Long" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy9_vinhLong" class="ml-2 text-sm text-gray-700">Vĩnh Long</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policy10" name="discountPolicy" value="10" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Con thương binh, con liệt sĩ">
+                            <label for="policy10" class="ml-2 text-sm text-gray-700">10. Con thương binh, con liệt sĩ (50% HK1)</label>
+                            <div id="policy10Options" class="sub-policy" style="display: none;">
+                                <div class="flex items-center">
+                                    <input type="radio" id="policy10_wounded" name="policy10Type" value="wounded" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" checked="">
+                                    <label for="policy10_wounded" class="ml-2 text-sm text-gray-700">Con thương binh</label>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" id="policy10_martyr" name="policy10Type" value="martyr" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300">
+                                    <label for="policy10_martyr" class="ml-2 text-sm text-gray-700">Con liệt sĩ</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center policy-option">
+                            <input type="radio" id="policyByScore" name="discountPolicy" value="byScore" class="h-4 w-4 text-blue-600 focus:ring-blue-600 border-gray-300" onchange="toggleEduTypeAndScoreTable()" aria-label="Chính sách dựa trên điểm trung bình">
+                            <label for="policyByScore" class="ml-2 text-sm text-gray-700">6 &amp; 7 &amp; 8 &amp;Dựa trên điểm trung bình lớp 12</label>
+                        </div>
+                    </div>
+                    <button type="button" onclick="clearPolicySelection()" class="mt-2 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm sm:text-base">Xóa lựa chọn</button>
+                </div>
+                <div class="custom-select" id="eduTypeContainer" style="display: none;">
+                    <label for="eduType" class="block text-sm font-medium text-gray-700">Loại hình giáo dục *</label>
+                    <select id="eduType" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm sm:text-base" onchange="updateSubjectTable()" aria-label="Loại hình giáo dục">
                         <option value="thpt">📚 THPT Chính Quy (9 môn)</option>
                         <option value="gdtx">📘 THPT GDTX (7 môn)</option>
                     </select>
                 </div>
-                <table class="w-full border-collapse bg-gray-50 rounded-lg overflow-hidden">
+                <table class="w-full border-collapse bg-gray-50 rounded-md overflow-hidden" id="scoreTable" style="display: none;">
                     <thead>
                         <tr>
-                            <th class="border border-gray-200 p-3 bg-blue-600 text-white text-sm sm:text-base font-semibold">Môn học</th>
-                            <th class="border border-gray-200 p-3 bg-blue-600 text-white text-sm sm:text-base font-semibold">Điểm cả năm (0.0–10.0)</th>
+                            <th class="border border-gray-200 p-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold">Môn học</th>
+                            <th class="border border-gray-200 p-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold">Điểm (10–100)</th>
                         </tr>
                     </thead>
-                    <tbody id="scoreTable">
+                    <tbody>
                         <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Ngữ văn</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub1" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Toán</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub2" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Tiếng Anh</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub3" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Ngữ văn</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub1" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Ngữ văn">
+                                <div id="error-sub1" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Quốc phòng - An ninh</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub4" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Toán</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub2" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Toán">
+                                <div id="error-sub2" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Vật lý</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub5" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Tiếng Anh</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub3" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Tiếng Anh">
+                                <div id="error-sub3" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Lịch sử</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub6" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Quốc phòng - An ninh</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub4" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Quốc phòng - An ninh">
+                                <div id="error-sub4" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Địa lý</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub7" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Vật lý</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub5" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Vật lý">
+                                <div id="error-sub5" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
-                        <tr id="sub8-row">
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Giáo dục KT & PL</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub8" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                        <tr>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Lịch sử</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub6" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Lịch sử">
+                                <div id="error-sub6" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
-                        <tr id="sub9-row">
-                            <td class="border border-gray-200 p-3 text-sm sm:text-base">Tin học</td>
-                            <td class="border border-gray-200 p-3"><input type="number" class="input-field w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base" id="sub9" min="0" max="10" step="0.1" oninput="validateScore(this)"></td>
+                        <tr>
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Địa lý</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub7" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Địa lý">
+                                <div id="error-sub7" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
+                        </tr>
+                        <tr id="sub8-row" style="display: table-row;">
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Giáo dục KT &amp; PL</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub8" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Giáo dục KT &amp; PL">
+                                <div id="error-sub8" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
+                        </tr>
+                        <tr id="sub9-row" style="display: table-row;">
+                            <td class="border border-gray-200 p-1.5 text-xs sm:text-sm">Tin học</td>
+                            <td class="border border-gray-200 p-1.5 relative text-center">
+                                <input type="number" inputmode="numeric" class="input-field w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-xs sm:text-sm" id="sub9" min="10" max="100" step="1" oninput="validateScore(this)" onkeypress="handleEnter(event, this)" aria-label="Điểm Tin học">
+                                <div id="error-sub9" class="error-message" style="display: none;">Điểm từ 10–100</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <div>
-                    <label class="block text-sm sm:text-base font-medium text-gray-700">Chọn chính sách giảm học phí (Mục 1–4, 9–10)</label>
-                    <div class="space-y-2 mt-2">
-                        <div class="flex items-center">
-                            <input type="radio" id="policy1" name="discountPolicy" value="1" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="policy1" class="ml-2 text-sm sm:text-base text-gray-700">Mục 1: Hộ nghèo, cận nghèo (50% năm thứ nhất)</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="policy2" name="discountPolicy" value="2" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="policy2" class="ml-2 text-sm sm:text-base text-gray-700">Mục 2: Mồ côi cha hoặc mẹ (50% năm thứ nhất)</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="policy3" name="discountPolicy" value="3" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="policy3" class="ml-2 text-sm sm:text-base text-gray-700">Mục 3: Con người có công, dân tộc thiểu số,... (40% HK1)</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="policy4" name="discountPolicy" value="4" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="policy4" class="ml-2 text-sm sm:text-base text-gray-700">Mục 4: Học sinh Vĩnh Long (20% HK1) / Phú Quới (40% HK1)</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="policy9" name="discountPolicy" value="9" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="policy9" class="ml-2 text-sm sm:text-base text-gray-700">Mục 9: Dân tộc Khmer (Miễn phí toàn khóa)</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="policy10" name="discountPolicy" value="10" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="policy10" class="ml-2 text-sm sm:text-base text-gray-700">Mục 10: Con thương binh, con liệt sĩ (50% HK1)</label>
-                        </div>
-                    </div>
-                    <button type="button" onclick="clearPolicySelection()" class="mt-3 w-full sm:w-auto px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">Xóa lựa chọn</button>
-                </div>
+                <p id="scoreInstruction" class="text-xs sm:text-sm text-blue-600 italic mt-2" style="display: none;">Nhập điểm theo thang 100 (VD: 6.7 → 67, 8.5 → 85). Kết quả điểm trung bình sẽ hiển thị theo thang 10 (0.0–10.0).</p>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button type="button" onclick="calculateAverage()" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg font-semibold">Tính Trung Bình</button>
-                    <button type="button" onclick="generateApplicationForm()" class="w-full sm:w-auto px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-base sm:text-lg font-semibold">Tạo Form Hỗ Trợ</button>
+                    <button type="button" onclick="calculateAverage()" id="calculateButton" class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base font-semibold">Kiểm Tra Kết Quả Giảm</button>
+                    <button type="button" onclick="generateApplicationForm()" class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm sm:text-base font-semibold">Tạo Form Hỗ Trợ</button>
                 </div>
-                <div id="totalResult" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-base sm:text-lg font-semibold text-blue-800 text-center">Điểm trung bình: Chưa tính</div>
+                <div id="totalResult" class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm sm:text-base font-semibold text-blue-800 text-center">Kết quả: Chưa kiểm tra</div>
             </form>
         </section>
-        <section class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 w-full md:w-1/2">
-            <h2 class="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Chính Sách Giảm Học Phí</h2>
-            <ul id="policyList" class="list-decimal pl-6 space-y-2 text-sm sm:text-base text-gray-700">
-                <li data-policy="1">Giảm 50% học phí năm thứ nhất cho tân sinh viên hộ nghèo, cận nghèo (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="2">Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi cha hoặc mồ côi mẹ (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="3">Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là con của người có công với cách mạng, tân sinh viên có anh/chị đang là sinh viên của Trường ĐHCL, tân sinh viên là người dân tộc thiểu số, tân sinh viên là con ruột của CB, GV trường THPT, TTGDTX, Sở GD&ĐT các tỉnh, tân sinh viên là con, em, cháu ruột của CB, GV Trường ĐHCL (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="4">Giảm 20% học phí HK1 năm thứ nhất cho tân sinh viên là học sinh các trường THPT, TTGDTX ở Vĩnh Long. Riêng tân sinh viên là học sinh Trường THCS và THPT Phú Quới giảm 40% học phí HK1 năm thứ nhất (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="5">Giảm 20% học phí trọn khóa cho tân sinh viên học các ngành: Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học (áp dụng khi không đủ điều kiện các ưu tiên khác).</li>
-                <li data-policy="6">Miễn học phí HK1 năm nhất cho tân sinh viên có điểm trung bình học tập năm lớp 12 đạt từ 9,0 trở lên, riêng ngành Dược học giảm 50% học phí HK1 năm thứ nhất (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="7">Giảm 50% học phí HK1 năm nhất cho tân sinh viên có điểm trung bình học tập năm lớp 12 đạt từ 8,5 đến dưới 9,0, riêng ngành Dược học giảm 25% học phí HK1 năm thứ nhất (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="8">Giảm 25% học phí HK1 cho tân sinh viên có điểm trung bình học tập năm lớp 12 đạt từ 8,0 đến dưới 8,5 (không áp dụng cho ngành Dược học, Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="9">Miễn học phí toàn khóa học tân sinh viên người dân tộc Khmer theo giới thiệu của Ban Dân tộc các tỉnh: An Giang, Bạc Liêu, Hậu Giang, Kiên Giang, Sóc Trăng, Trà Vinh, Vĩnh Long (không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
-                <li data-policy="10">Tân sinh viên là con thương binh, con liệt sĩ được giảm 50% học phí học kỳ 1 năm thứ nhất.</li>
-                <li data-policy="11">Tặng 01 bộ đồng phục thể dục của Trường Đại học Cửu Long cho mỗi tân sinh viên nhập học.</li>
-                <li data-policy="12">Trường Đại học Cửu Long tổ chức khám sức khỏe miễn phí cho toàn bộ tân sinh viên, để hoàn thành hồ sơ nhập học theo quy định.</li>
+        <section class="bg-white rounded-xl shadow-md p-4 sm:p-5 w-full md:w-1/2">
+            <div class="text-center mb-4">
+                <a href="https://tuyensinh.mku.edu.vn/" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/d/de/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_C%E1%BB%ADu_Long.svg/1200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_C%E1%BB%ADu_Long.svg.png" alt="Logo Đại học Cửu Long" class="w-24 sm:w-32 mx-auto hover:scale-105 transition-transform duration-300">
+                </a>
+            </div>
+            <h2 class="text-lg sm:text-xl font-semibold text-blue-700 mb-3">Chính Sách Giảm Học Phí (Đọc chính sách để chọn đúng điều kiện miễn giảm học phí)</h2>
+            <ul id="policyList" class="list-decimal pl-5 space-y-1.5 text-xs sm:text-sm text-gray-700">
+                <li data-policy="1">Giảm 50% học phí năm thứ nhất cho tân sinh viên hộ nghèo, cận nghèo (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="2">Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi cha hoặc mẹ (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="3">Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là con của người có công với cách mạng, có anh/chị đang là sinh viên ĐHCL, người dân tộc thiểu số, con ruột của CB, GV trường THPT, TTGDTX, Sở GD&amp;ĐT các tỉnh, hoặc con, em, cháu ruột của CB, GV ĐHCL (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="4">Giảm 20% học phí HK1 năm thứ nhất cho học sinh THPT, TTGDTX ở Vĩnh Long. Riêng học sinh THCS và THPT Phú Quới giảm 40% HK1 (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="5">Giảm 20% học phí trọn khóa cho ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học.</li>
+                <li data-policy="6">Miễn học phí HK1 năm nhất nếu điểm TBM lớp 12 từ 9.0 trở lên, riêng ngành Dược học giảm 50% HK1 (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="7">Giảm 50% học phí HK1 năm nhất nếu điểm TBM lớp 12 từ 8.5–dưới 9.0, riêng Dược học giảm 25% HK1 (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="8">Giảm 25% học phí HK1 nếu điểm TBM lớp 12 từ 8.0–dưới 8.5 (không áp dụng cho Dược học, Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="9">Miễn học phí toàn khóa cho sinh viên dân tộc Khmer theo giới thiệu của Ban Dân tộc các tỉnh: An Giang, Bạc Liêu, Hậu Giang, Kiên Giang, Sóc Trăng, Trà Vinh, Vĩnh Long (không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).</li>
+                <li data-policy="10">Giảm 50% học phí HK1 năm thứ nhất cho con thương binh, con liệt sĩ.</li>
+                <li data-policy="11">Tặng 01 bộ đồng phục thể dục ĐHCL cho mỗi tân sinh viên nhập học.</li>
+                <li data-policy="12">Khám sức khỏe miễn phí cho tân sinh viên để hoàn thành hồ sơ nhập học.</li>
             </ul>
-            <h3 class="text-lg sm:text-xl font-semibold text-blue-700 mt-6">Thông Tin Môn Học</h3>
-            <div class="mt-2 text-sm sm:text-base text-gray-700">
+            <h3 class="text-base sm:text-lg font-semibold text-blue-700 mt-4">Thông Tin Môn Học</h3>
+            <div class="mt-2 text-xs sm:text-sm text-gray-700">
                 <h4 class="font-medium text-blue-600">📚 THPT Chính Quy</h4>
                 <p>Học 12–13 môn/năm, tính TBM 11–12 môn:</p>
-                <ul class="list-disc pl-6">
+                <ul class="list-disc pl-5">
                     <li><strong>Môn chính:</strong> Toán, Ngữ Văn, Tiếng Anh, Vật Lý, Hóa Học, Sinh Học, Lịch Sử, Địa Lý, Giáo dục công dân, Công nghệ, Tin học, Quốc phòng – An ninh.</li>
                     <li><strong>Không tính TBM:</strong> Giáo dục thể chất.</li>
                 </ul>
-                <h4 class="font-medium text-blue-600 mt-4">📘 THPT GDTX</h4>
+                <h4 class="font-medium text-blue-600 mt-3">📘 THPT GDTX</h4>
                 <p>Học 7 môn, tính TBM 6–7 môn:</p>
-                <ul class="list-disc pl-6">
+                <ul class="list-disc pl-5">
                     <li><strong>Môn chính:</strong> Toán, Ngữ Văn, Tiếng Anh, Lịch Sử, Địa Lý, Vật Lý hoặc Hóa Học, Giáo dục công dân.</li>
                     <li><strong>Không học:</strong> Tin học, Công nghệ, Thể dục, Quốc phòng – An ninh.</li>
                 </ul>
-                <p class="mt-4 italic text-gray-500">Lưu ý: Chỉ áp dụng cho tân sinh viên tốt nghiệp THPT 2025. Nếu thuộc nhiều diện, chỉ hưởng mức cao nhất. Mục 1–4, 6–9 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt. Mục 5 áp dụng cho Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học khi không đủ điều kiện ưu tiên khác.</p>
+                <p class="mt-3 italic text-gray-500 text-xs">Lưu ý: Chỉ áp dụng cho tân sinh viên tốt nghiệp THPT 2025. Nếu thuộc nhiều diện, chỉ hưởng mức cao nhất. Mục 1–4, 6–9 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt. Mục 5 áp dụng khi chọn ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học.</p>
             </div>
         </section>
     </main>
-    <footer class="mt-6 sm:mt-8 w-full max-w-2xl text-center">
-        <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+    <footer class="mt-6 w-full max-w-2xl text-center">
+        <div class="bg-white rounded-xl shadow-md p-4">
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="https://tuyensinh.mku.edu.vn/" target="_blank" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg font-semibold">Học Phí - Học Bổng</a>
-                <a href="https://tuyensinh.mku.edu.vn/dang-ky-xet-tuyen-truc-tuyen" target="_blank" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg font-semibold">Đăng Ký Xét Tuyển</a>
-                <a href="https://nguyenhoangvu2003.id.vn/" target="_blank" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg font-semibold">Liên Hệ Tư Vấn</a>
+                <a href="https://tuyensinh.mku.edu.vn/" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base font-semibold">Học Phí - Học Bổng</a>
+                <a href="https://tuyensinh.mku.edu.vn/dang-ky-xet-tuyen-truc-tuyen" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base font-semibold">Đăng Ký Xét Tuyển</a>
+                <a href="https://nguyenhoangvu2003.id.vn/" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base font-semibold">Liên Hệ Tư Vấn</a>
             </div>
         </div>
     </footer>
 
     <script>
-        function validateScore(input) {
-            const raw = input.value;
-            if (raw === "0." || raw === "0.0") return;
-            const value = parseFloat(raw);
-            if (isNaN(value) || value < 0 || value > 10) {
-                document.getElementById('totalResult').innerText = 'Lỗi: Vui lòng nhập điểm từ 0.0 đến 10.0';
+        const majors = [
+            "Y khoa",
+            "Răng – Hàm – Mặt",
+            "Y học cổ truyền",
+            "Dược học",
+            "Kỹ thuật hình ảnh y học",
+            "Hộ sinh",
+            "Kỹ thuật xét nghiệm y học",
+            "Kỹ thuật phục hồi chức năng",
+            "Điều dưỡng",
+            "Marketing",
+            "Quản trị kinh doanh",
+            "Quản lý kinh tế",
+            "Kinh doanh thương mại",
+            "Tài chính – Ngân hàng",
+            "Công nghệ tài chính",
+            "Kế toán",
+            "Thiết kế đồ họa",
+            "Luật",
+            "Luật kinh tế",
+            "Quản trị dịch vụ du lịch và lữ hành",
+            "Công nghệ thông tin",
+            "Công nghệ kỹ thuật công trình xây dựng",
+            "Công nghệ kỹ thuật điện, điện tử",
+            "Kỹ thuật y sinh",
+            "Kỹ thuật xây dựng công trình giao thông",
+            "Công nghệ kỹ thuật ô tô",
+            "Công nghệ kỹ thuật cơ khí",
+            "Công nghệ thực phẩm",
+            "Nông học",
+            "Bảo vệ thực vật",
+            "Nuôi trồng thủy sản",
+            "Thú y",
+            "Tiếng Việt & Văn hóa Việt Nam",
+            "Ngôn ngữ Anh",
+            "Đông phương học",
+            "Công tác xã hội",
+            "Truyền thông đa phương tiện",
+            "Quan hệ công chúng"
+        ];
+
+        function capitalizeWords(input) {
+            let value = input.value;
+            let cursorPos = input.selectionStart;
+            let words = value.split(' ');
+            let newWords = words.map((word, index) => {
+                if (word.length > 0) {
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                }
+                return word;
+            });
+            let newValue = newWords.join(' ');
+            if (newValue !== value) {
+                input.value = newValue;
+                input.setSelectionRange(cursorPos, cursorPos);
+            }
+        }
+
+        function validatePhone(input) {
+            const value = input.value;
+            const errorDiv = document.getElementById('error-phone');
+            input.value = value.replace(/[^0-9]/g, '').slice(0, 10);
+            if (value.length > 10) {
+                errorDiv.style.display = 'block';
                 input.classList.add('invalid');
-                setTimeout(() => input.classList.remove('invalid'), 1000);
+                setTimeout(() => {
+                    input.classList.remove('invalid');
+                    errorDiv.style.display = 'none';
+                }, 1500);
             } else {
-                input.value = Math.round(value * 10) / 10;
+                errorDiv.style.display = 'none';
+                input.classList.remove('invalid');
+            }
+        }
+
+        function validateScore(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            const errorDiv = document.getElementById(`error-${input.id}`);
+            if (value === '' || (value.length <= 2 && parseInt(value) >= 1)) {
+                input.value = value;
+                errorDiv.style.display = 'none';
+                input.classList.remove('invalid');
+                return;
+            }
+            let parsedValue = parseInt(value);
+            if (isNaN(parsedValue) || parsedValue < 10 || parsedValue > 100) {
+                errorDiv.style.display = 'block';
+                input.classList.add('invalid');
+                setTimeout(() => {
+                    input.classList.remove('invalid');
+                    errorDiv.style.display = 'none';
+                    input.value = '';
+                }, 1500);
+                return;
+            }
+            input.value = value;
+            errorDiv.style.display = 'none';
+            input.classList.remove('invalid');
+        }
+
+        function filterMajors(input) {
+            const value = input.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const suggestionsDiv = document.getElementById('majorSuggestions');
+            suggestionsDiv.innerHTML = '';
+            if (value) {
+                const filteredMajors = majors.filter(major => 
+                    major.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(value)
+                );
+                filteredMajors.forEach((major, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.textContent = major;
+                    div.onclick = () => selectMajor(major);
+                    div.onmouseover = () => div.classList.add('active');
+                    div.onmouseout = () => div.classList.remove('active');
+                    suggestionsDiv.appendChild(div);
+                });
+                suggestionsDiv.style.display = filteredMajors.length ? 'block' : 'none';
+            } else {
+                suggestionsDiv.style.display = 'none';
+            }
+        }
+
+        function showSuggestions() {
+            const input = document.getElementById('major');
+            if (input.value) filterMajors(input);
+        }
+
+        function hideSuggestions() {
+            setTimeout(() => {
+                document.getElementById('majorSuggestions').style.display = 'none';
+            }, 200);
+        }
+
+        function selectMajor(major) {
+            document.getElementById('major').value = major;
+            document.getElementById('majorSuggestions').style.display = 'none';
+            const eligibleMajors = [
+                'Công tác xã hội',
+                'Kỹ thuật xây dựng công trình giao thông',
+                'Kỹ thuật y sinh',
+                'Kinh doanh thương mại',
+                'Hộ sinh',
+                'Kỹ thuật hình ảnh y học'
+            ];
+            if (eligibleMajors.includes(major)) {
+                document.getElementById('policy5').checked = true;
+                document.getElementById(`policy5_${major.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '')}`).checked = true;
+                toggleEduTypeAndScoreTable();
+            }
+        }
+
+        function handleEnter(event, currentInput) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const suggestionsDiv = document.getElementById('majorSuggestions');
+                if (currentInput.id === 'major' && suggestionsDiv.style.display === 'block') {
+                    const firstSuggestion = suggestionsDiv.querySelector('.suggestion-item');
+                    if (firstSuggestion) selectMajor(firstSuggestion.textContent);
+                }
+                const form = document.getElementById('inputForm');
+                const inputs = Array.from(form.querySelectorAll('input:not([type="radio"]), select')).filter(input => !input.closest('#scoreTable'));
+                const scoreInputs = document.getElementById('scoreTable').style.display === 'table' ? Array.from(document.querySelectorAll('#scoreTable input')) : [];
+                const allInputs = [...inputs, ...scoreInputs];
+                const currentIndex = allInputs.indexOf(currentInput);
+                if (currentIndex < allInputs.length - 1) {
+                    allInputs[currentIndex + 1].focus();
+                    if (['fullName', 'birthPlace', 'address', 'major'].includes(allInputs[currentIndex + 1].id)) {
+                        setTimeout(() => capitalizeWords(allInputs[currentIndex + 1]), 0);
+                    }
+                } else {
+                    document.getElementById('calculateButton').focus();
+                }
+            }
+        }
+
+        function toggleEduTypeAndScoreTable() {
+            const selectedPolicy = document.querySelector('input[name="discountPolicy"]:checked');
+            const eduTypeContainer = document.getElementById('eduTypeContainer');
+            const scoreTable = document.getElementById('scoreTable');
+            const scoreInstruction = document.getElementById('scoreInstruction');
+            const policyOptions = document.querySelectorAll('.sub-policy');
+            policyOptions.forEach(option => option.style.display = 'none');
+            if (selectedPolicy && selectedPolicy.value === 'byScore') {
+                eduTypeContainer.style.display = 'block';
+                scoreTable.style.display = 'table';
+                scoreInstruction.style.display = 'block';
+                updateSubjectTable();
+            } else if (selectedPolicy) {
+                document.getElementById(`policy${selectedPolicy.value}Options`).style.display = 'block';
+                eduTypeContainer.style.display = 'none';
+                scoreTable.style.display = 'none';
+                scoreInstruction.style.display = 'none';
+                document.getElementById('eduType').value = 'thpt';
+                document.querySelectorAll('#scoreTable input').forEach(input => {
+                    input.value = '';
+                    document.getElementById(`error-${input.id}`).style.display = 'none';
+                });
+            } else {
+                eduTypeContainer.style.display = 'none';
+                scoreTable.style.display = 'none';
+                scoreInstruction.style.display = 'none';
+                document.getElementById('eduType').value = 'thpt';
+                document.querySelectorAll('#scoreTable input').forEach(input => {
+                    input.value = '';
+                    document.getElementById(`error-${input.id}`).style.display = 'none';
+                });
             }
         }
 
@@ -291,37 +684,42 @@
         }
 
         function calculateAverage() {
-            const eduType = document.getElementById('eduType').value;
-            const subjectCount = eduType === 'gdtx' ? 7 : 9;
-            const scores = [];
-
-            // Kiểm tra điểm hợp lệ
-            for (let i = 1; i <= subjectCount; i++) {
-                const input = document.getElementById(`sub${i}`);
-                const score = parseFloat(input.value) || 0;
-                if (score < 0 || score > 10 || isNaN(score)) {
-                    document.getElementById('totalResult').innerText = `Lỗi: Điểm môn ${i} không hợp lệ (phải từ 0.0 đến 10.0)`;
-                    input.classList.add('invalid');
-                    setTimeout(() => input.classList.remove('invalid'), 1000);
-                    return;
-                }
-                scores.push(score);
-            }
-
-            // Kiểm tra ngành học
+            const selectedPolicy = document.querySelector('input[name="discountPolicy"]:checked');
             const majorInput = document.getElementById('major').value;
-            if (!majorInput) {
-                document.getElementById('totalResult').innerText = 'Lỗi: Vui lòng chọn ngành học';
+            const totalResult = document.getElementById('totalResult');
+            const phoneInput = document.getElementById('phone');
+
+            if (!majorInput || !majors.includes(majorInput)) {
+                totalResult.innerText = 'Lỗi: Vui lòng chọn ngành học hợp lệ';
                 document.getElementById('major').classList.add('invalid');
                 setTimeout(() => document.getElementById('major').classList.remove('invalid'), 1000);
                 return;
             }
 
-            // Tính điểm trung bình
-            const averageScore = (scores.reduce((sum, score) => sum + score, 0) / subjectCount).toFixed(1);
-            const selectedPolicy = document.querySelector('input[name="discountPolicy"]:checked');
+            if (phoneInput.value.length !== 10 || !/^[0-9]{10}$/.test(phoneInput.value)) {
+                totalResult.innerText = 'Lỗi: Số điện thoại phải là 10 chữ số';
+                phoneInput.classList.add('invalid');
+                document.getElementById('error-phone').style.display = 'block';
+                setTimeout(() => {
+                    phoneInput.classList.remove('invalid');
+                    document.getElementById('error-phone').style.display = 'none';
+                }, 1500);
+                return;
+            }
+
+            if (selectedPolicy && ['1', '2', '3', '4', '5', '9', '10'].includes(selectedPolicy.value)) {
+                const subType = document.querySelector(`input[name="policy${selectedPolicy.value}Type"]:checked`);
+                if (!subType) {
+                    totalResult.innerText = `Lỗi: Vui lòng chọn mục con cho chính sách ${selectedPolicy.value}`;
+                    document.getElementById(`policy${selectedPolicy.value}`).classList.add('invalid');
+                    setTimeout(() => document.getElementById(`policy${selectedPolicy.value}`).classList.remove('invalid'), 1000);
+                    return;
+                }
+            }
+
             const major = majorInput.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             const restrictedMajors = ['y khoa', 'y hoc co truyen', 'rang ham mat'];
+            const pharmacyMajor = ['duoc hoc'];
             const eligibleMajors = [
                 'cong tac xa hoi',
                 'ky thuat xay dung cong trinh giao thong',
@@ -331,78 +729,151 @@
                 'ky thuat hinh anh y hoc'
             ];
             const isRestrictedMajor = restrictedMajors.some(restricted => major.includes(restricted));
+            const isPharmacyMajor = pharmacyMajor.some(pharmacy => major.includes(pharmacy));
             const isEligibleMajor = eligibleMajors.some(eligible => major.includes(eligible));
             let discountMessage = '';
+            let fullDiscountMessage = '';
             let selectedPolicyId = '';
+            let subType = '';
 
-            // Xóa highlight trước đó
             document.querySelectorAll('#policyList li').forEach(li => li.classList.remove('highlight'));
 
-            // Xác định chính sách ưu tiên
-            if (isRestrictedMajor) {
-                // Ngành bị hạn chế: Chỉ áp dụng Mục 10
-                if (selectedPolicy && selectedPolicy.value === '10') {
-                    selectedPolicyId = '10';
-                    discountMessage = `Con thương binh, con liệt sĩ: Giảm 50% học phí HK1 (Mục 10, ưu tiên cao nhất).`;
-                } else {
+            if (selectedPolicy && selectedPolicy.value === 'byScore') {
+                const eduType = document.getElementById('eduType').value;
+                const subjectCount = eduType === 'gdtx' ? 7 : 9;
+                const scores = [];
+
+                for (let i = 1; i <= subjectCount; i++) {
+                    const input = document.getElementById(`sub${i}`);
+                    const value = input.value;
+                    if (value === '') {
+                        totalResult.innerText = `Lỗi: Vui lòng nhập đầy đủ điểm môn ${i}`;
+                        input.classList.add('invalid');
+                        setTimeout(() => input.classList.remove('invalid'), 1000);
+                        return;
+                    }
+                    const score = parseInt(value);
+                    if (isNaN(score) || score < 10 || score > 100) {
+                        totalResult.innerText = `Lỗi: Điểm môn ${i} không hợp lệ (10–100)`;
+                        input.classList.add('invalid');
+                        setTimeout(() => input.classList.remove('invalid'), 1000);
+                        return;
+                    }
+                    scores.push(score / 10);
+                }
+
+                const averageScore = (scores.reduce((sum, score) => sum + score, 0) / subjectCount).toFixed(2);
+
+                if (isRestrictedMajor) {
                     selectedPolicyId = '';
-                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (Mục 1–4, 5–9 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
-                }
-            } else if (selectedPolicy && ['1', '2', '3', '4', '9', '10'].includes(selectedPolicy.value)) {
-                // Ưu tiên Mục 1–4, 9–10 nếu được chọn
-                selectedPolicyId = selectedPolicy.value;
-                switch (selectedPolicyId) {
-                    case '1':
-                        discountMessage = `Hộ nghèo/cận nghèo: Giảm 50% học phí năm thứ nhất (Mục 1, ưu tiên cao nhất).`;
-                        break;
-                    case '2':
-                        discountMessage = `Mồ côi cha/mẹ: Giảm 50% học phí năm thứ nhất (Mục 2, ưu tiên cao nhất).`;
-                        break;
-                    case '3':
-                        discountMessage = `Con người có công, dân tộc thiểu số,...: Giảm 40% học phí HK1 (Mục 3, ưu tiên cao nhất).`;
-                        break;
-                    case '4':
-                        discountMessage = `Học sinh Vĩnh Long/Phú Quới: Giảm ${selectedPolicy.nextElementSibling.textContent.includes('Phú Quới') ? '40%' : '20%'} học phí HK1 (Mục 4, ưu tiên cao nhất).`;
-                        break;
-                    case '9':
-                        discountMessage = `Dân tộc Khmer: Miễn học phí toàn khóa (Mục 9, ưu tiên cao nhất).`;
-                        break;
-                    case '10':
-                        discountMessage = `Con thương binh, con liệt sĩ: Giảm 50% học phí HK1 (Mục 10, ưu tiên cao nhất).`;
-                        break;
-                }
-            } else {
-                // Kiểm tra Mục 6–8 dựa trên TBM trước
-                if (averageScore >= 9.0) {
-                    selectedPolicyId = '6';
-                    discountMessage = `TBM ${averageScore}: ${major.includes('duoc hoc') ? 'Giảm 50% học phí HK1' : 'Miễn học phí HK1'} (Mục 6, ưu tiên cao nhất).`;
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí dựa trên điểm (6–8 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                    fullDiscountMessage = discountMessage;
+                } else if (averageScore >= 9.0) {
+                    if (isEligibleMajor) {
+                        selectedPolicyId = '5';
+                        discountMessage = `Ngành ${majorInput}: Giảm 20% học phí trọn khóa cho ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học (ưu tiên cao hơn so với chính sách điểm).`;
+                        fullDiscountMessage = discountMessage;
+                    } else if (isPharmacyMajor) {
+                        selectedPolicyId = '6';
+                        discountMessage = `Ngành Dược học: Giảm 50% học phí HK1 năm nhất (TBM ${averageScore} ≥ 9.0).`;
+                        fullDiscountMessage = document.querySelector(`#policyList li[data-policy="6"]`).textContent.replace(/^\d+\.\s*/, '');
+                    } else {
+                        selectedPolicyId = '6';
+                        discountMessage = `Miễn học phí HK1 năm nhất (TBM ${averageScore} ≥ 9.0).`;
+                        fullDiscountMessage = document.querySelector(`#policyList li[data-policy="6"]`).textContent.replace(/^\d+\.\s*/, '');
+                    }
                 } else if (averageScore >= 8.5) {
-                    selectedPolicyId = '7';
-                    discountMessage = `TBM ${averageScore}: ${major.includes('duoc hoc') ? 'Giảm 25% học phí HK1' : 'Giảm 50% học phí HK1'} (Mục 7, ưu tiên cao nhất).`;
+                    if (isEligibleMajor) {
+                        selectedPolicyId = '5';
+                        discountMessage = `Ngành ${majorInput}: Giảm 20% học phí trọn khóa cho ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học (ưu tiên cao hơn so với chính sách điểm).`;
+                        fullDiscountMessage = discountMessage;
+                    } else if (isPharmacyMajor) {
+                        selectedPolicyId = '7';
+                        discountMessage = `Ngành Dược học: Giảm 25% học phí HK1 năm nhất (TBM ${averageScore} từ 8.5–dưới 9.0).`;
+                        fullDiscountMessage = document.querySelector(`#policyList li[data-policy="7"]`).textContent.replace(/^\d+\.\s*/, '');
+                    } else {
+                        selectedPolicyId = '7';
+                        discountMessage = `Giảm 50% học phí HK1 năm nhất (TBM ${averageScore} từ 8.5–dưới 9.0).`;
+                        fullDiscountMessage = document.querySelector(`#policyList li[data-policy="7"]`).textContent.replace(/^\d+\.\s*/, '');
+                    }
                 } else if (averageScore >= 8.0) {
                     if (isEligibleMajor) {
-                        // Ưu tiên Mục 5 cho eligibleMajors khi điểm từ 8.0 đến dưới 8.5
                         selectedPolicyId = '5';
-                        discountMessage = `Ngành ${majorInput}: Giảm 20% học phí trọn khóa (Mục 5, ưu tiên cao hơn Mục 8 cho ngành này).`;
-                    } else if (!major.includes('duoc hoc')) {
-                        // Áp dụng Mục 8 cho các ngành khác (không phải Dược học)
-                        selectedPolicyId = '8';
-                        discountMessage = `TBM ${averageScore}: Giảm 25% học phí HK1 (Mục 8, ưu tiên cao nhất).`;
-                    } else {
+                        discountMessage = `Ngành ${majorInput}: Giảm 20% học phí trọn khóa cho ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học (ưu tiên cao hơn so với chính sách điểm).`;
+                        fullDiscountMessage = discountMessage;
+                    } else if (isPharmacyMajor || isRestrictedMajor) {
                         selectedPolicyId = '';
-                        discountMessage = `TBM ${averageScore}: Không đủ điều kiện giảm học phí (Mục 8 không áp dụng cho ngành Dược học).`;
+                        discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (chính sách 8 không áp dụng cho Dược học, Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                        fullDiscountMessage = discountMessage;
+                    } else {
+                        selectedPolicyId = '8';
+                        discountMessage = `Giảm 25% học phí HK1 năm nhất (TBM ${averageScore} từ 8.0–dưới 8.5).`;
+                        fullDiscountMessage = document.querySelector(`#policyList li[data-policy="8"]`).textContent.replace(/^\d+\.\s*/, '');
                     }
                 } else if (isEligibleMajor) {
-                    // Áp dụng Mục 5 nếu không thỏa mãn Mục 6–8 và ngành thuộc eligibleMajors
                     selectedPolicyId = '5';
-                    discountMessage = `Ngành ${majorInput}: Giảm 20% học phí trọn khóa (Mục 5, ưu tiên cao nhất).`;
+                    discountMessage = document.querySelector(`#policyList li[data-policy="5"]`).textContent.replace(/^\d+\.\s*/, '');
+                    fullDiscountMessage = discountMessage;
                 } else {
                     selectedPolicyId = '';
                     discountMessage = `TBM ${averageScore}: Không đủ điều kiện giảm học phí.`;
+                    fullDiscountMessage = discountMessage;
                 }
+                totalResult.innerText = `Điểm trung bình: ${averageScore}\n${discountMessage}`;
+            } else if (selectedPolicy && ['1', '2', '3', '4', '5', '9', '10'].includes(selectedPolicy.value)) {
+                selectedPolicyId = selectedPolicy.value;
+                subType = document.querySelector(`input[name="policy${selectedPolicy.value}Type"]:checked`)?.value || '';
+                const policyMessages = {
+                    '1': `Giảm 50% học phí năm thứ nhất cho tân sinh viên ${subType === 'poor' ? 'hộ nghèo' : 'cận nghèo'}.`,
+                    '2': `Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi ${subType === 'father' ? 'cha' : subType === 'mother' ? 'mẹ' : 'cha và mẹ'}.`,
+                    '3': `Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là ${{
+                        revolutionary: 'con của người có công với cách mạng',
+                        sibling: 'có anh/chị đang là sinh viên ĐHCL',
+                        minority: 'người dân tộc thiểu số',
+                        teacherChild: 'con ruột của CB, GV trường THPT, TTGDTX, Sở GD&ĐT các tỉnh',
+                        mkuRelative: 'con, em, cháu ruột của CB, GV ĐHCL'
+                    }[subType]}.`,
+                    '4': `Giảm ${subType} học phí HK1 năm thứ nhất cho học sinh ${subType === '20%' ? 'THPT, TTGDTX ở Vĩnh Long' : 'THCS và THPT Phú Quới'}.`,
+                    '5': `Giảm 20% học phí trọn khóa cho ngành ${subType}.`,
+                    '9': `Miễn học phí toàn khóa cho sinh viên dân tộc Khmer theo giới thiệu của Ban Dân tộc tỉnh ${subType}.`,
+                    '10': `Giảm 50% học phí HK1 năm thứ nhất cho ${subType === 'wounded' ? 'con thương binh' : 'con liệt sĩ'}.`
+                };
+                if (selectedPolicyId === '1' && isRestrictedMajor) {
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (1 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                    selectedPolicyId = '';
+                } else if (selectedPolicyId === '2' && isRestrictedMajor) {
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (2 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                    selectedPolicyId = '';
+                } else if (selectedPolicyId === '3' && isRestrictedMajor) {
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (3 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                    selectedPolicyId = '';
+                } else if (selectedPolicyId === '4' && isRestrictedMajor) {
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (4 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                    selectedPolicyId = '';
+                } else if (selectedPolicyId === '5' && !isEligibleMajor) {
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (5 chỉ áp dụng cho ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học).`;
+                    selectedPolicyId = '';
+                } else if (selectedPolicyId === '9' && isRestrictedMajor) {
+                    discountMessage = `Ngành ${majorInput}: Không đủ điều kiện giảm học phí (9 không áp dụng cho Y khoa, Y học cổ truyền, Răng Hàm Mặt).`;
+                    selectedPolicyId = '';
+                } else {
+                    discountMessage = policyMessages[selectedPolicyId];
+                    fullDiscountMessage = document.querySelector(`#policyList li[data-policy="${selectedPolicyId}"]`).textContent.replace(/^\d+\.\s*/, '');
+                }
+                totalResult.innerText = discountMessage;
+            } else if (isEligibleMajor) {
+                selectedPolicyId = '5';
+                subType = majorInput;
+                discountMessage = `Giảm 20% học phí trọn khóa cho ngành ${majorInput}.`;
+                fullDiscountMessage = document.querySelector(`#policyList li[data-policy="5"]`).textContent.replace(/^\d+\.\s*/, '');
+                totalResult.innerText = discountMessage;
+            } else {
+                selectedPolicyId = '';
+                discountMessage = `Không chọn chính sách giảm học phí và không thuộc diện ưu tiên.`;
+                fullDiscountMessage = discountMessage;
+                totalResult.innerText = discountMessage;
             }
 
-            // Áp dụng highlight cho mục được chọn
             if (selectedPolicyId) {
                 const selectedLi = document.querySelector(`#policyList li[data-policy="${selectedPolicyId}"]`);
                 if (selectedLi) {
@@ -411,9 +882,6 @@
                 }
             }
 
-            document.getElementById('totalResult').innerText = `Điểm trung bình: ${averageScore}\n${discountMessage}`;
-
-            // Lưu dữ liệu vào localStorage
             const personalInfo = {
                 fullName: document.getElementById('fullName').value,
                 dob: document.getElementById('dob').value,
@@ -421,17 +889,29 @@
                 address: document.getElementById('address').value,
                 phone: document.getElementById('phone').value,
                 major: majorInput,
-                averageScore: averageScore,
+                averageScore: selectedPolicy && selectedPolicy.value === 'byScore' ? totalResult.innerText.includes('TBM') ? parseFloat(totalResult.innerText.split('TBM ')[1].split(':')[0]) : 0 : 0,
                 discountMessage: discountMessage,
-                selectedPolicyId: selectedPolicyId
+                fullDiscountMessage: fullDiscountMessage,
+                selectedPolicyId: selectedPolicyId,
+                discountType: subType
             };
             localStorage.setItem('applicationData', JSON.stringify(personalInfo));
         }
 
         function clearPolicySelection() {
             document.querySelectorAll('input[name="discountPolicy"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[name^="policy"][name$="Type"]').forEach(radio => radio.checked = false);
             document.querySelectorAll('#policyList li').forEach(li => li.classList.remove('highlight'));
-            calculateAverage();
+            document.getElementById('eduTypeContainer').style.display = 'none';
+            document.getElementById('scoreTable').style.display = 'none';
+            document.getElementById('scoreInstruction').style.display = 'none';
+            document.querySelectorAll('.sub-policy').forEach(option => option.style.display = 'none');
+            document.getElementById('eduType').value = 'thpt';
+            document.querySelectorAll('#scoreTable input').forEach(input => {
+                input.value = '';
+                document.getElementById(`error-${input.id}`).style.display = 'none';
+            });
+            document.getElementById('totalResult').innerText = 'Kết quả: Chưa kiểm tra';
         }
 
         function generateApplicationForm() {
@@ -447,15 +927,39 @@
                 alert('Vui lòng điền đầy đủ thông tin cá nhân!');
                 return;
             }
-            if (totalResult === 'Điểm trung bình: Chưa tính') {
-                alert('Vui lòng tính điểm trung bình trước khi tạo form!');
+            if (!majors.includes(major)) {
+                alert('Vui lòng chọn ngành học hợp lệ từ danh sách gợi ý!');
                 return;
+            }
+            if (phone.length !== 10 || !/^[0-9]{10}$/.test(phone)) {
+                alert('Số điện thoại phải là 10 chữ số, không chứa chữ cái!');
+                return;
+            }
+            if (totalResult === 'Kết quả: Chưa kiểm tra') {
+                alert('Vui lòng chọn chính sách và kiểm tra kết quả trước khi tạo form!');
+                return;
+            }
+            const selectedPolicy = document.querySelector('input[name="discountPolicy"]:checked');
+            if (selectedPolicy && ['1', '2', '3', '4', '5', '9', '10'].includes(selectedPolicy.value)) {
+                const subType = document.querySelector(`input[name="policy${selectedPolicy.value}Type"]:checked`);
+                if (!subType) {
+                    alert(`Vui lòng chọn mục con cho chính sách ${selectedPolicy.value}!`);
+                    return;
+                }
             }
 
             window.location.href = 'application-form.html';
         }
 
-        window.onload = updateSubjectTable;
+        window.onload = function() {
+            toggleEduTypeAndScoreTable();
+            updateSubjectTable();
+            ['fullName', 'birthPlace', 'address', 'major'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input.value) capitalizeWords(input);
+            });
+        };
     </script>
-</body>
-</html>
+
+
+</body></html>
