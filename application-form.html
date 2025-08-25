@@ -1,113 +1,179 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" style="--kinh-gui-margin: 295.11273193359375px;">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=210mm, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Đơn xin miễn giảm học phí cho tân sinh viên Đại học Cửu Long năm 2025">
     <meta name="keywords" content="miễn giảm học phí, Đại học Cửu Long, tân sinh viên 2025">
     <meta name="author" content="Đại học Cửu Long">
     <title>Đơn Xin Nhận Tiền Miễn Giảm Học Phí - Đại học Cửu Long</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Default font and color settings for the document */
         body {
             font-family: 'Times New Roman', Times, serif;
             color: #000000;
-            margin: 0;
-            background-color: #f3f4f6; /* bg-gray-100 */
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
         }
+
+        /* Form container styled for A4 size and layout */
         .form-container {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 794px;
+            margin: 1cm auto;
             padding: 15mm;
             box-sizing: border-box;
-            background-color: #ffffff; /* bg-white */
         }
+
+        /* Main title styling */
         .title-main {
             font-size: 12pt;
             font-weight: bold;
             text-align: center;
         }
+
+        /* Subtitle styling */
         .title-sub {
             font-size: 13pt;
             font-weight: bold;
             text-align: center;
         }
+
+        /* Form title styling */
         .form-title {
             font-size: 14pt;
             font-weight: bold;
             text-align: center;
         }
+
+        /* Recipient section styling */
         .recipient .kinh-gui {
             text-align: left;
             font-size: 14pt;
         }
-        .recipient .recipient-list {
-            font-size: 14pt;
-            display: inline;
-            white-space: nowrap;
+
+        .recipient .flex {
+            display: flex;
+            justify-content: flex-start;
         }
-        .recipient .recipient-list span {
+
+        .recipient .inline-block {
+            text-align: left;
+        }
+
+        .recipient .inline-block p {
             position: relative;
-            padding-left: 0.2rem;
+            padding-left: 1rem;
+            font-size: 14pt;
         }
-        .recipient .recipient-list span::before {
+
+        .recipient .inline-block p::before {
             content: '-';
             position: absolute;
             left: 0;
             font-weight: bold;
         }
+
+        /* Personal info section styling */
         .personal-info p {
             font-size: 13pt;
         }
+
+        /* Policy section styling */
         .policy-section > p {
             font-size: 13pt;
             font-weight: bold;
         }
+
         .policy-section ul {
             list-style-position: outside;
             padding-left: 1.5rem;
         }
+
         .policy-section li {
             font-size: 13pt;
         }
-        .attachment-section > p {
+
+        /* Attachment section styling */
+        .attachment-section .attachment-title {
             font-size: 13pt;
             font-weight: bold;
+            display: inline-block;
         }
+
+        .attachment-section .italic {
+            font-style: italic;
+            font-weight: normal;
+            text-transform: none !important;
+        }
+
         .attachment-section ul {
             list-style-position: outside;
             padding-left: 1.5rem;
             overflow-x: hidden;
         }
+
         .attachment-section li {
             font-size: 13pt;
         }
+
+        /* Closing text styling */
         .closing-text.policy p {
             font-size: 11pt;
         }
+
         .closing-text.attachment p {
             font-size: 13pt;
         }
+
+        /* Signature section styling */
         .signature-section p {
             font-size: 13pt;
         }
+
         .signature-section .bold {
             font-weight: bold;
         }
+
         .signature-section .italic {
             font-style: italic;
         }
-        .italic {
-            font-style: italic;
-        }
+
         .shape {
             border-bottom: 1px solid #000000;
             display: inline-block;
         }
-        .policy-section input,
+
+        /* Checkbox styling for policy section (larger) */
+        .policy-section input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-radius: 0px;
+            position: relative;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .policy-section input:checked {
+            border-color: #000000 !important;
+            background-color: #ffffff;
+        }
+
+        .policy-section input:checked::before {
+            content: '✔';
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Checkbox styling for attachment section (smaller) */
         .attachment-section input {
             appearance: none;
             -webkit-appearance: none;
@@ -115,17 +181,17 @@
             width: 16px;
             height: 16px;
             border: 2px solid #000;
-            border-radius: 4px;
+            border-radius: 0px;
             position: relative;
             vertical-align: middle;
             margin-right: 8px;
         }
-        .policy-section input:checked,
+
         .attachment-section input:checked {
             border-color: #000000 !important;
             background-color: #ffffff;
         }
-        .policy-section input:checked::before,
+
         .attachment-section input:checked::before {
             content: '✔';
             font-size: 12px;
@@ -136,11 +202,22 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
+        /* Responsive design for smaller screens */
         @media (max-width: 640px) {
             .form-container {
-                padding: 10mm;
+                padding: 1rem;
+            }
+            .recipient {
+                text-align: center;
+            }
+            .recipient .kinh-gui {
+                margin-left: 0 !important;
+            }
+            .recipient .flex {
                 width: 100%;
-                max-width: 210mm;
+                justify-content: center;
+                margin-left: 0 !important;
             }
             .recipient p,
             .personal-info p,
@@ -152,31 +229,37 @@
             .signature-section p,
             .no-print button,
             #errorMessage {
-                font-size: 14pt;
+                font-size: 16px;
             }
             .no-print {
                 flex-direction: column;
                 align-items: center;
             }
-            .no-print p {
-                font-size: 14px;
-            }
             .no-print button {
                 width: 100%;
                 max-width: 300px;
             }
+            .policy-section input {
+                width: 18px;
+                height: 18px;
+            }
+            .policy-section input:checked::before {
+                font-size: 13px;
+            }
+            .attachment-section input {
+                width: 14px;
+                height: 14px;
+            }
+            .attachment-section input:checked::before {
+                font-size: 11px;
+            }
         }
+
+        /* Print-specific styling for A4 layout */
         @media print {
             body {
                 margin: 0;
                 padding: 0;
-                width: 210mm;
-                min-height: 297mm;
-                background-color: #ffffff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                transform: scale(1) !important;
-                zoom: 100% !important;
             }
             .form-container {
                 margin: 0;
@@ -184,21 +267,18 @@
                 border: none;
                 box-shadow: none;
                 width: 210mm;
-                min-height: 297mm;
-                box-sizing: border-box;
-                page-break-inside: avoid;
-                background-color: #ffffff !important;
+                max-width: 210mm;
             }
             .no-print, .no-print * {
                 display: none !important;
                 visibility: hidden !important;
             }
+            .recipient .flex {
+                justify-content: flex-start;
+                margin-left: var(--kinh-gui-margin) !important;
+            }
             .recipient .kinh-gui {
                 text-align: left !important;
-            }
-            .recipient .recipient-list {
-                display: inline !important;
-                white-space: nowrap !important;
             }
             .title-main {
                 font-size: 12pt !important;
@@ -225,9 +305,14 @@
             .policy-section li {
                 font-size: 13pt !important;
             }
-            .attachment-section > p {
+            .attachment-section .attachment-title {
                 font-size: 13pt !important;
                 font-weight: bold !important;
+                display: inline-block !important;
+            }
+            .attachment-section .italic {
+                font-weight: normal !important;
+                text-transform: none !important;
             }
             .attachment-section li {
                 font-size: 13pt !important;
@@ -241,23 +326,47 @@
             .signature-section p {
                 font-size: 13pt !important;
             }
-            .policy-section input,
-            .attachment-section input {
-                width: 14pt !important;
-                height: 14pt !important;
-                border: 2px solid #000000 !important;
-                border-radius: 4px !important;
+            .policy-section input {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                width: 16pt;
+                height: 16pt;
+                border: 2px solid #000000;
+                border-radius: 0px;
                 position: relative;
             }
-            .policy-section input:checked,
+            .policy-section input:checked {
+                border-color: #000000 !important;
+                background-color: #ffffff;
+            }
+            .policy-section input:checked::before {
+                content: '✔';
+                font-size: 12pt;
+                font-weight: bold;
+                color: #000000;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .attachment-section input {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                width: 12pt;
+                height: 12pt;
+                border: 2px solid #000000;
+                border-radius: 0px;
+                position: relative;
+            }
             .attachment-section input:checked {
                 border-color: #000000 !important;
-                background-color: #ffffff !important;
+                background-color: #ffffff;
             }
-            .policy-section input:checked::before,
             .attachment-section input:checked::before {
                 content: '✔';
-                font-size: 12pt !important;
+                font-size: 10pt;
                 font-weight: bold;
                 color: #000000;
                 position: absolute;
@@ -267,24 +376,449 @@
             }
             @page {
                 size: A4;
-                margin: 0;
+                margin: 10mm;
             }
-            html, body {
-                -webkit-transform: none !important;
-                transform: none !important;
-                zoom: 100% !important;
+        }
+    </style>
+    <style>
+        /* Tailwind CSS styles */
+        *, ::before, ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style: ;
+        }
+        ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style: ;
+        }
+        *, ::after, ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb;
+        }
+        ::after, ::before {
+            --tw-content: '';
+        }
+        :host, html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            margin: 0;
+            line-height: inherit;
+        }
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px;
+        }
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-size: inherit;
+            font-weight: inherit;
+        }
+        a {
+            color: inherit;
+            text-decoration: inherit;
+        }
+        b, strong {
+            font-weight: bolder;
+        }
+        code, kbd, pre, samp {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            font-size: 1em;
+        }
+        small {
+            font-size: 80%;
+        }
+        sub, sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+        }
+        sub {
+            bottom: -.25em;
+        }
+        sup {
+            top: -.5em;
+        }
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse;
+        }
+        button, input, optgroup, select, textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0;
+        }
+        button, select {
+            text-transform: none;
+        }
+        button, input:where([type=button]), input:where([type=reset]), input:where([type=submit]) {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none;
+        }
+        :-moz-focusring {
+            outline: auto;
+        }
+        :-moz-ui-invalid {
+            box-shadow: none;
+        }
+        progress {
+            vertical-align: baseline;
+        }
+        ::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+            height: auto;
+        }
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px;
+        }
+        ::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit;
+        }
+        summary {
+            display: list-item;
+        }
+        blockquote, dd, dl, figure, h1, h2, h3, h4, h5, h6, hr, p, pre {
+            margin: 0;
+        }
+        fieldset {
+            margin: 0;
+            padding: 0;
+        }
+        legend {
+            padding: 0;
+        }
+        menu, ol, ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        dialog {
+            padding: 0;
+        }
+        textarea {
+            resize: vertical;
+        }
+        input::placeholder, textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af;
+        }
+        [role=button], button {
+            cursor: pointer;
+        }
+        :disabled {
+            cursor: default;
+        }
+        audio, canvas, embed, iframe, img, object, svg, video {
+            display: block;
+            vertical-align: middle;
+        }
+        img, video {
+            max-width: 100%;
+            height: auto;
+        }
+        [hidden]:where(:not([hidden=until-found])) {
+            display: none;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+        .mt-4 {
+            margin-top: 1rem;
+        }
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+        .inline-block {
+            display: inline-block;
+        }
+        .flex {
+            display: flex;
+        }
+        .h-20 {
+            height: 5rem;
+        }
+        .h-4 {
+            height: 1rem;
+        }
+        .w-1\/2 {
+            width: 50%;
+        }
+        .w-4 {
+            width: 1rem;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-3xl {
+            max-width: 48rem;
+        }
+        .list-decimal {
+            list-style-type: decimal;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        .gap-3 {
+            gap: 0.75rem;
+        }
+        .space-y-1 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+        }
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        .rounded-md {
+            border-radius: 0.375rem;
+        }
+        .border-gray-300 {
+            --tw-border-opacity: 1;
+            border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+        }
+        .bg-blue-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+        }
+        .bg-gray-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+        }
+        .bg-gray-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
+        }
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+        }
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .pl-5 {
+            padding-left: 1.25rem;
+        }
+        .pl-6 {
+            padding-left: 1.5rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .font-medium {
+            font-weight: 500;
+        }
+        .font-semibold {
+            font-weight: 600;
+        }
+        .italic {
+            font-style: italic;
+        }
+        .text-blue-600 {
+            --tw-text-opacity: 1;
+            color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+        }
+        .text-red-600 {
+            --tw-text-opacity: 1;
+            color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+        }
+        .text-white {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+        }
+        .transition-colors {
+            transition-property: color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        .hover\:bg-blue-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+        }
+        .hover\:bg-gray-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
+        }
+        .focus\:ring-blue-500:focus {
+            --tw-ring-opacity: 1;
+            --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));
+        }
+        @media (min-width: 640px) {
+            .sm\:flex-row {
+                flex-direction: row;
             }
         }
     </style>
 </head>
-<body>
-    <div class="form-container">
+<body class="bg-gray-100">
+    <div class="form-container bg-white rounded-lg">
         <h1 class="title-main mb-2">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h1>
         <p class="title-sub mb-6"><span class="shape">Độc lập - Tự do - Hạnh phúc</span></p>
         <h2 class="form-title mt-4 mb-2">ĐƠN XIN NHẬN TIỀN MIỄN GIẢM HỌC PHÍ</h2>
         <p class="form-title" id="subtitle">Dành cho tân sinh viên <span class="shape">hệ Đại học chính</span> quy năm 2025, khóa 26</p>
         <div class="recipient mt-4">
-            <p id="kinhGui" class="kinh-gui"><strong>Kính gửi:</strong> <span class="recipient-list"><span>Ban Giám hiệu Trường Đại học Cửu Long;</span> <span>Trung tâm Tuyển sinh – Truyền thông;</span> <span>Phòng Kế hoạch – Tài chính.</span></span></p>
+            <p id="kinhGui" class="kinh-gui" style="margin-left: 223.316px;">Kính gửi:</p>
+            <div class="flex" style="margin-left: 295.113px;">
+                <div class="inline-block space-y-1">
+                    <p>Ban Giám hiệu Trường Đại học Cửu Long;</p>
+                    <p>Trung tâm Tuyển sinh – Truyền thông;</p>
+                    <p>Phòng Kế hoạch – Tài chính.</p>
+                </div>
+            </div>
         </div>
         <div class="personal-info mt-4 space-y-1">
             <div class="flex flex-col sm:flex-row justify-between gap-2">
@@ -295,14 +829,14 @@
                 <p>Ngày sinh: <strong id="dob">20/01/2003</strong></p>
                 <p>Nơi sinh: <strong id="birthPlace">Vĩnh Long</strong></p>
             </div>
-            <p>Địa chỉ liên lạc: <strong id="address">337/27 Thanh Yên, Vĩnh Thành, Vĩnh Long</strong></p>
+            <p>Địa chỉ liên lạc: <strong id="address">337/27 Thanh Yên - Vĩnh Thành - Vĩnh Long</strong></p>
             <p>Là sinh viên khóa 26, ngành: <strong id="major">Công nghệ thông tin</strong></p>
         </div>
         <div class="policy-section mt-4">
             <p class="font-medium">Tôi thuộc diện miễn giảm học phí:</p>
             <ul id="policyList" class="list-decimal pl-6 mt-2 space-y-1">
                 <li data-policy="1"><input type="checkbox" id="policy1" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" disabled> Giảm 50% học phí năm thứ nhất cho tân sinh viên hộ nghèo, cận nghèo <span class="italic">(không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt)</span>.</li>
-                <li data-policy="2"><input type="checkbox" id="policy2" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" disabled> Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi cha, mồ côi mẹ hoặc mồ côi cả cha và mẹ <span class="italic">(không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt)</span>.</li>
+                <li data-policy="2"><input type="checkbox" id="policy2" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" disabled> Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi cha hoặc mẹ <span class="italic">(không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt)</span>.</li>
                 <li data-policy="3"><input type="checkbox" id="policy3" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" disabled> Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là con của người có công với cách mạng, có anh/chị đang là sinh viên ĐHCL, người dân tộc thiểu số, con ruột của CB, GV trường THPT, TTGDTX, Sở GD&ĐT các tỉnh, hoặc con, em, cháu ruột của CB, GV ĐHCL <span class="italic">(không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt)</span>.</li>
                 <li data-policy="4"><input type="checkbox" id="policy4" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" disabled> Giảm 20% học phí HK1 năm thứ nhất cho học sinh THPT, TTGDTX ở Vĩnh Long. Riêng học sinh THCS và THPT Phú Quới giảm 40% HK1 <span class="italic">(không áp dụng cho ngành Y khoa, Y học cổ truyền, Răng Hàm Mặt)</span>.</li>
                 <li data-policy="5"><input type="checkbox" id="policy5" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" disabled> Giảm 20% học phí trọn khóa cho ngành Công tác xã hội, Kỹ thuật xây dựng công trình giao thông, Kỹ thuật y sinh, Kinh doanh thương mại, Hộ sinh, Kỹ thuật hình ảnh y học.</li>
@@ -317,7 +851,7 @@
             </div>
         </div>
         <div class="attachment-section mt-4">
-            <p class="font-medium">Hồ sơ đính kèm <span class="italic">(đánh dấu X vào các minh chứng cho đối tượng miễn giảm học phí)</span>:</p>
+            <p class="font-medium attachment-title">Hồ sơ đính kèm <span class="italic no-uppercase">(đánh dấu X vào các minh chứng cho đối tượng miễn giảm học phí)</span>:</p>
             <ul class="list-decimal pl-5 mt-2 space-y-1">
                 <li><input type="checkbox" id="attach1" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"> Bản sao Giấy khai sinh của tân sinh viên.</li>
                 <li><input type="checkbox" id="attach2" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"> Bản sao Giấy khai sinh của anh/chị/em ruột sinh viên.</li>
@@ -342,38 +876,37 @@
         <div class="signature-section mt-6 flex justify-between">
             <div class="w-1/2 text-center">
                 <p class="bold">Ý KIẾN TRUNG TÂM TUYỂN SINH</p>
-                <p class="mt-2" id="selectedPolicy">Giảm 40% học phí HK1 năm thứ nhất cho học sinh THCS và THPT Phú Quới.</p>
+                <p class="mt-2" id="selectedPolicy">Giảm 50% học phí năm thứ nhất cho tân sinh viên hộ nghèo.</p>
                 <div class="h-20"></div>
             </div>
             <div class="w-1/2 text-center">
-                <p class="italic">Vĩnh Long, ngày <span id="currentDate">20/08/2025</span></p>
+                <p class="italic">Vĩnh Long, ngày <span id="currentDate">21/08/2025</span></p>
                 <p class="bold">NGƯỜI LÀM ĐƠN</p>
                 <div class="h-20"></div>
             </div>
         </div>
     </div>
     <div class="no-print mt-4 flex flex-col sm:flex-row gap-3 justify-center w-full max-w-3xl mx-auto">
-        <button onclick="previewPrint()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold">Xem Trước Khi In</button>
         <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold">In Đơn</button>
         <button onclick="window.location.href='index.html'" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors font-semibold">Quay Lại Trang Tính Điểm</button>
-        <div class="mt-4 text-center text-sm text-gray-600">
-            <p><strong>Hướng dẫn in:</strong> Chọn khổ giấy A4, tỷ lệ 100%, đặt lề thành "Không" hoặc "0", và bật tùy chọn in nền (background graphics) trong cài đặt máy in để đảm bảo căn chỉnh chính xác.</p>
-        </div>
     </div>
     <p class="no-print mt-4 text-red-600 text-center font-semibold" id="errorMessage" style="display: none;">Lỗi: Không tìm thấy dữ liệu. Vui lòng quay lại trang tính điểm!</p>
 
     <script>
         window.onload = function() {
+            // Retrieve data from localStorage
             const data = JSON.parse(localStorage.getItem('applicationData') || '{}');
             const formContainer = document.querySelector('.form-container');
             const errorMessage = document.getElementById('errorMessage');
 
+            // Check for valid data
             if (!data.fullName || !data.major || !data.selectedPolicyId) {
                 formContainer.style.display = 'none';
                 errorMessage.style.display = 'block';
                 return;
             }
 
+            // Display personal information
             document.getElementById('fullName').innerText = data.fullName || 'Chưa nhập';
             document.getElementById('dob').innerText = data.dob ? formatDate(data.dob) : 'Chưa nhập';
             document.getElementById('birthPlace').innerText = data.birthPlace || 'Chưa nhập';
@@ -382,6 +915,7 @@
             document.getElementById('major').innerText = data.major || 'Chưa nhập';
             document.getElementById('currentDate').innerText = formatDate(new Date());
 
+            // Display average score if applicable
             if (data.averageScore && data.selectedPolicyId === 'byScore') {
                 const policyList = document.getElementById('policyList');
                 const tbmLi = document.createElement('li');
@@ -389,28 +923,49 @@
                 policyList.appendChild(tbmLi);
             }
 
+            // Policy messages for the recruitment center's opinion
             const policyMessages = {
-                '1': `Giảm 50% học phí năm thứ nhất cho tân sinh viên ${data.discountType === 'poor' ? 'hộ nghèo' : 'cận nghèo'}.`,
-                '2': `Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi ${data.discountType === 'father' ? 'cha' : data.discountType === 'mother' ? 'mẹ' : 'cha và mẹ'}.`,
-                '3': `Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là ${{
-                    revolutionary: 'con của người có công với cách mạng',
-                    sibling: 'có anh/chị đang là sinh viên ĐHCL',
-                    minority: 'người dân tộc thiểu số',
-                    teacherChild: 'con ruột của CB, GV trường THPT, TTGDTX, Sở GD&ĐT các tỉnh',
-                    mkuRelative: 'con, em, cháu ruột của CB, GV ĐHCL'
-                }[data.discountType]}.`,
-                '4': `Giảm ${data.discountType} học phí HK1 năm thứ nhất cho học sinh ${data.discountType === '20%' ? 'THPT, TTGDTX ở Vĩnh Long' : 'THCS và THPT Phú Quới'}.`,
-                '5': `Giảm 20% học phí trọn khóa cho ngành ${data.discountType}.`,
-                '6': `Miễn học phí HK1 năm nhất nếu điểm TBM lớp 12 từ 9.0 trở lên${data.major && data.major.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes('duoc hoc') ? ' (giảm 50% HK1 cho ngành Dược học)' : ''} (điểm TBM: ${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`,
-                '7': `Giảm 50% học phí HK1 năm nhất nếu điểm TBM lớp 12 từ 8.5–dưới 9.0${data.major && data.major.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes('duoc hoc') ? ' (giảm 25% HK1 cho ngành Dược học)' : ''} (điểm TBM: ${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`,
-                '8': `Giảm 25% học phí HK1 nếu điểm TBM lớp 12 từ 8.0–dưới 8.5 (điểm TBM: ${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`,
-                '9': `Miễn học phí toàn khóa cho sinh viên dân tộc Khmer theo giới thiệu của Ban Dân tộc tỉnh ${data.discountType}.`,
-                '10': `Giảm 50% học phí HK1 năm thứ nhất cho ${data.discountType === 'wounded' ? 'con thương binh' : 'con liệt sĩ'}.`
+                '1': `Giảm 50% học phí năm thứ nhất cho tân sinh viên thuộc hộ ${data.discountType === 'poor' ? 'nghèo' : 'cận nghèo'}.`,
+                '2': 'Giảm 50% học phí năm thứ nhất cho tân sinh viên mồ côi cha hoặc mẹ.',
+                '3': {
+                    'revolutionary': 'Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là con của người có công với cách mạng.',
+                    'sibling': 'Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên có anh/chị đang là sinh viên trường ĐH Cửu Long.',
+                    'minority': 'Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là người dân tộc thiểu số.',
+                    'teacherChild': 'Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là con ruột của CB, GV trường THPT, TTGDTX, Sở GD&ĐT các tỉnh.',
+                    'mkuRelative': 'Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là con, em, cháu ruột của CB, GV trường ĐH Cửu Long.'
+                }[data.discountType] || 'Chưa chọn',
+                '4': {
+                    '20%': 'Giảm 20% học phí HK1 năm thứ nhất cho tân sinh viên là học sinh THPT, TTGDTX ở Vĩnh Long.',
+                    '40%': 'Giảm 40% học phí HK1 năm thứ nhất cho tân sinh viên là học sinh THCS và THPT Phú Quới.'
+                }[data.discountType] || 'Chưa chọn',
+                '5': {
+                    'Công tác xã hội': 'Giảm 20% học phí trọn khóa cho tân sinh viên học ngành Công tác xã hội.',
+                    'Kỹ thuật xây dựng công trình giao thông': 'Giảm 20% học phí trọn khóa cho tân sinh viên học ngành Kỹ thuật xây dựng công trình giao thông.',
+                    'Kỹ thuật y sinh': 'Giảm 20% học phí trọn khóa cho tân sinh viên học ngành Kỹ thuật y sinh.',
+                    'Kinh doanh thương mại': 'Giảm 20% học phí trọn khóa cho tân sinh viên học ngành Kinh doanh thương mại.',
+                    'Hộ sinh': 'Giảm 20% học phí trọn khóa cho tân sinh viên học ngành Hộ sinh.',
+                    'Kỹ thuật hình ảnh y học': 'Giảm 20% học phí trọn khóa cho tân sinh viên học ngành Kỹ thuật hình ảnh y học.'
+                }[data.discountType] || 'Chưa chọn',
+                '6': data.major && data.major.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes('duoc hoc') 
+                    ? `Giảm 50% học phí HK1 năm thứ nhất cho tân sinh viên ngành Dược học có điểm trung bình cả năm lớp 12 đạt từ 9.0 trở lên (${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`
+                    : `Miễn học phí HK1 năm thứ nhất cho tân sinh viên có điểm trung bình cả năm lớp 12 đạt từ 9.0 trở lên (${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`,
+                '7': data.major && data.major.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes('duoc hoc') 
+                    ? `Giảm 25% học phí HK1 năm thứ nhất cho tân sinh viên ngành Dược học có điểm trung bình cả năm lớp 12 đạt từ 8.5 đến dưới 9.0 (${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`
+                    : `Giảm 50% học phí HK1 năm thứ nhất cho tân sinh viên có điểm trung bình cả năm lớp 12 đạt từ 8.5 đến dưới 9.0 (${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`,
+                '8': `Giảm 25% học phí HK1 năm thứ nhất cho tân sinh viên có điểm trung bình cả năm lớp 12 đạt từ 8.0 đến dưới 8.5 (${data.averageScore ? data.averageScore.toFixed(2) : 'Chưa có'}).`,
+                '9': 'Miễn học phí trọn khóa cho tân sinh viên là người dân tộc Khmer theo giới thiệu của Ban Dân tộc các tỉnh.',
+                '10': {
+                    'wounded': 'Giảm 50% học phí HK1 năm thứ nhất cho tân sinh viên là con thương binh, con liệt sĩ.',
+                    'martyr': 'Giảm 50% học phí HK1 năm thứ nhất cho tân sinh viên là con thương binh, con liệt sĩ.'
+                }[data.discountType] || 'Chưa chọn'
             };
 
+            // Display selected policy in the recruitment center's opinion
             const selectedPolicyId = data.selectedPolicyId;
             if (selectedPolicyId) {
                 document.getElementById('selectedPolicy').innerText = policyMessages[selectedPolicyId] || data.discountMessage || 'Chưa chọn';
+
+                // Automatically check the policy checkbox
                 if (selectedPolicyId !== 'byScore') {
                     const policyCheckbox = document.getElementById(`policy${selectedPolicyId}`);
                     if (policyCheckbox) {
@@ -422,52 +977,44 @@
                 document.getElementById('selectedPolicy').innerText = data.discountMessage || 'Chưa chọn';
             }
 
-            // Align "Kính gửi" under "sinh viên"
-            function alignKinhGui() {
-                const subtitle = document.getElementById('subtitle');
-                const kinhGui = document.getElementById('kinhGui');
+            // Calculate alignment for "Kính gửi:" and recipient list
+            const subtitle = document.getElementById('subtitle');
+            const kinhGui = document.getElementById('kinhGui');
+            const recipientFlex = document.querySelector('.recipient .flex');
+            const subtitleText = subtitle.innerText;
+            const tanIndex = subtitleText.indexOf('cho');
+            if (tanIndex !== -1) {
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
-                context.font = "14pt 'Times New Roman', Times, serif";
-                
-                const subtitleText = subtitle.innerText;
-                const sinhVienIndex = subtitleText.indexOf('sinh viên');
-                if (sinhVienIndex === -1) return;
-                
-                const textBeforeSinhVien = subtitleText.substring(0, sinhVienIndex);
-                const sinhVienText = 'sinh viên';
-                const textBeforeSinhVienWidth = context.measureText(textBeforeSinhVien).width;
-                const sinhVienWidth = context.measureText(sinhVienText).width;
-                
-                const formWidth = formContainer.offsetWidth;
+                context.font = window.getComputedStyle(subtitle).font;
+                const textBeforeTan = subtitleText.substring(0, tanIndex);
+                const textBeforeTanWidth = context.measureText(textBeforeTan).width;
                 const subtitleWidth = context.measureText(subtitleText).width;
-                const subtitleLeftOffset = (formWidth - subtitleWidth) / 2;
-                const sinhVienCenter = subtitleLeftOffset + textBeforeSinhVienWidth + (sinhVienWidth / 2);
-                
-                const kinhGuiText = 'Kính gửi:';
-                const kinhGuiWidth = context.measureText(kinhGuiText).width;
-                const kinhGuiLeftMargin = sinhVienCenter - (kinhGuiWidth / 2);
-                
-                kinhGui.style.marginLeft = `${kinhGuiLeftMargin}px`;
-            }
+                const formWidth = formContainer.offsetWidth;
+                const subtitleLeftOffset = (formWidth - subtitleWidth) / 2.35;
+                const tanPosition = subtitleLeftOffset + textBeforeTanWidth;
+                kinhGui.style.marginLeft = `${tanPosition}px`;
 
-            alignKinhGui();
-            window.addEventListener('resize', alignKinhGui);
+                // Calculate colon position in "Kính gửi:"
+                const kinhGuiText = kinhGui.innerText;
+                const colonIndex = kinhGuiText.indexOf(':');
+                const textBeforeColon = kinhGuiText.substring(0, colonIndex + 1);
+                context.font = window.getComputedStyle(kinhGui).font;
+                const textBeforeColonWidth = context.measureText(textBeforeColon).width;
+                const colonPosition = tanPosition + textBeforeColonWidth;
+                recipientFlex.style.marginLeft = `${colonPosition}px`;
+                document.documentElement.style.setProperty('--kinh-gui-margin', `${colonPosition}px`);
+            }
         };
 
+        // Date formatting function
         function formatDate(dateString) {
             if (!dateString) return 'Chưa nhập';
-            const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
-            if (isNaN(date)) return 'Chưa nhập';
+            const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
-        }
-
-        function previewPrint() {
-            alert('Vui lòng kiểm tra xem trước in, chọn khổ giấy A4, tỷ lệ 100%, đặt lề thành "Không" hoặc "0", và bật tùy chọn in nền (background graphics) để đảm bảo căn chỉnh chính xác.');
-            window.print();
         }
     </script>
 </body>
